@@ -5,14 +5,14 @@ require('dotenv').config();
 
 const dbUrl = process.env.DATABASE_URL || '';
 const isLocal = dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1');
-const requiresSSL = process.env.DB_SSL === 'true' || 
-  (process.env.DB_SSL !== 'false' && !isLocal && (dbUrl.includes('neon.tech') || dbUrl.includes('sslmode=require')));
+const requiresSSL = process.env.VERCEL === '1' || process.env.DB_SSL === 'true' || 
+  (process.env.DB_SSL !== 'false' && !isLocal);
 
 const poolConfig = {
   connectionString: dbUrl,
-  max: 20,
+  max: process.env.VERCEL === '1' ? 5 : 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  connectionTimeoutMillis: 10000,
 };
 
 if (requiresSSL) {
