@@ -6,8 +6,11 @@ const { validateRegistration, validateLogin } = require('../utils/validators');
 const SALT_ROUNDS = 12;
 
 const generateToken = (user) => {
+  const adminEmail = process.env.ADMIN_EMAIL || 'swayamkataria.dev@gmail.com';
+  const isTargetAdmin = user.email && user.email.toLowerCase() === adminEmail.toLowerCase();
+  const role = user.role || (isTargetAdmin ? 'ADMIN' : 'USER');
   return jwt.sign(
-    { id: user.id, email: user.email },
+    { id: user.id, email: user.email, role },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
@@ -37,13 +40,17 @@ const authController = {
       // Hash password
       const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
+      const adminEmail = process.env.ADMIN_EMAIL || 'swayamkataria.dev@gmail.com';
+      const role = normalizedEmail === adminEmail.toLowerCase() ? 'ADMIN' : 'USER';
+
       // Create user
       const user = await userModel.createUser(
         fullName.trim(),
         normalizedEmail,
         passwordHash,
         phoneNumber?.trim() || null,
-        notificationPreference || 'EMAIL'
+        notificationPreference || 'EMAIL',
+        role
       );
 
       // Generate JWT
@@ -58,6 +65,7 @@ const authController = {
           email: user.email,
           phoneNumber: user.phone_number,
           notificationPreference: user.notification_preference,
+          role: user.role || role,
         },
       });
     } catch (err) {
@@ -103,6 +111,7 @@ const authController = {
           email: user.email,
           phoneNumber: user.phone_number,
           notificationPreference: user.notification_preference,
+          role: user.role || 'USER',
         },
       });
     } catch (err) {
@@ -127,6 +136,7 @@ const authController = {
           email: user.email,
           phoneNumber: user.phone_number,
           notificationPreference: user.notification_preference,
+          role: user.role || 'USER',
           createdAt: user.created_at,
         },
       });

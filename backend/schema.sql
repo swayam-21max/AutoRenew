@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20),
     notification_preference VARCHAR(30) DEFAULT 'EMAIL',
+    role VARCHAR(20) DEFAULT 'USER',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

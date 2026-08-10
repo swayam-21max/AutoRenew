@@ -71,11 +71,27 @@ async function initDatabase() {
       ALTER TABLE reminder_logs ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'SUCCESS';
       ALTER TABLE reminder_logs ADD COLUMN IF NOT EXISTS policy_id UUID;
       ALTER TABLE reminder_logs ALTER COLUMN policy_id DROP NOT NULL;
-      ALTER TABLE reminder_logs DROP CONSTRAINT IF EXISTS reminder_logs_reminder_type_check;
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'USER';
 
       CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_vehicle_reminder_days 
           ON reminder_logs(vehicle_id, reminder_type, days_before);
     `);
+
+    // Ensure Admin User exists and has password Swayam@21
+    try {
+      const bcrypt = require('bcryptjs');
+      const adminEmail = (process.env.ADMIN_EMAIL || 'swayamkataria.dev@gmail.com').toLowerCase();
+      const adminPasswordHash = await bcrypt.hash('Swayam@21', 12);
+      await client.query(`
+        INSERT INTO users (full_name, email, password_hash, role)
+        VALUES ('Swayam Kataria', $1, $2, 'ADMIN')
+        ON CONFLICT (email) 
+        DO UPDATE SET role = 'ADMIN', password_hash = EXCLUDED.password_hash;
+      `, [adminEmail, adminPasswordHash]);
+      console.log(`✓ Admin user configured: ${adminEmail}`);
+    } catch (seedErr) {
+      console.warn('⚠ Admin user seed notice:', seedErr.message);
+    }
 
     client.release();
   } catch (err) {
