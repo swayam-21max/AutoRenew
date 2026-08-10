@@ -28,7 +28,8 @@ const authController = {
       }
 
       // Check if user already exists
-      const existingUser = await userModel.findByEmail(email.toLowerCase());
+      const normalizedEmail = email.trim().toLowerCase();
+      const existingUser = await userModel.findByEmail(normalizedEmail);
       if (existingUser) {
         return res.status(409).json({ error: 'An account with this email already exists.' });
       }
@@ -39,7 +40,7 @@ const authController = {
       // Create user
       const user = await userModel.createUser(
         fullName.trim(),
-        email.toLowerCase(),
+        normalizedEmail,
         passwordHash,
         phoneNumber?.trim() || null,
         notificationPreference || 'EMAIL'
@@ -78,7 +79,8 @@ const authController = {
       }
 
       // Find user
-      const user = await userModel.findByEmail(email.toLowerCase());
+      const normalizedEmail = email.trim().toLowerCase();
+      const user = await userModel.findByEmail(normalizedEmail);
       if (!user) {
         return res.status(401).json({ error: 'Invalid email or password.' });
       }
