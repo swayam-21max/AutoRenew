@@ -69,6 +69,7 @@ async function initDatabase() {
       ALTER TABLE reminder_logs ADD COLUMN IF NOT EXISTS days_before INT DEFAULT 0;
       ALTER TABLE reminder_logs ADD COLUMN IF NOT EXISTS recipient_email VARCHAR(255);
       ALTER TABLE reminder_logs ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'SUCCESS';
+      ALTER TABLE reminder_logs ADD COLUMN IF NOT EXISTS policy_id UUID;
       ALTER TABLE reminder_logs ALTER COLUMN policy_id DROP NOT NULL;
       ALTER TABLE reminder_logs DROP CONSTRAINT IF EXISTS reminder_logs_reminder_type_check;
 
