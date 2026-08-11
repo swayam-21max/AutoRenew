@@ -212,10 +212,14 @@ export default function VehicleUpload() {
               <span style={{ fontSize: '18px' }}>⚡</span>
               <div>
                 <p style={{ fontSize: 'var(--font-size-xs)', fontWeight: 800, color: '#0369A1', margin: 0 }}>
-                  Automated Reminder Engine Triggered
+                  Automated Reminder Scan Completed
                 </p>
-                <p style={{ fontSize: '11px', color: '#0284C7', margin: 0 }}>
-                  Dispatched {importSummary.remindersDispatched || 0} automated renewal email(s) to vehicle owners for upcoming expiries.
+                <p style={{ fontSize: '11px', color: '#0284C7', margin: 0, lineHeight: 1.4 }}>
+                  {importSummary.remindersDispatched > 0
+                    ? `Dispatched ${importSummary.remindersDispatched} automated renewal email(s) for vehicles with upcoming due expiries.`
+                    : importSummary.remindersSummary?.skipped > 0
+                    ? `Checked fleet expiries: Reminders for due items were already dispatched previously (skipped ${importSummary.remindersSummary.skipped} duplicate log entries).`
+                    : `Fleet scan completed: All imported vehicles have expiries >30 days away or are up-to-date (no immediate emails due right now).`}
                 </p>
               </div>
             </div>

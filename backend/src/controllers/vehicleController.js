@@ -43,6 +43,7 @@ const vehicleController = {
           ...parsed.summary,
           imported: dbResult.inserted,
           remindersDispatched: reminderSummary?.dispatched || 0,
+          remindersSummary: reminderSummary,
         },
         validationErrors: parsed.validationErrors,
       });
