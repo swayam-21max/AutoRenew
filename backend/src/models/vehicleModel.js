@@ -262,9 +262,9 @@ const vehicleModel = {
               u.notification_preference
        FROM vehicles v
        JOIN users u ON v.user_id = u.id
-       WHERE (v.insurance_expiry > CURRENT_DATE AND v.insurance_expiry <= CURRENT_DATE + INTERVAL '30 days')
-          OR (v.puc_expiry > CURRENT_DATE AND v.puc_expiry <= CURRENT_DATE + INTERVAL '15 days')
-          OR (v.road_tax_expiry > CURRENT_DATE AND v.road_tax_expiry <= CURRENT_DATE + INTERVAL '60 days')`
+       WHERE (v.insurance_expiry >= CURRENT_DATE AND v.insurance_expiry <= CURRENT_DATE + INTERVAL '30 days')
+          OR (v.puc_expiry >= CURRENT_DATE AND v.puc_expiry <= CURRENT_DATE + INTERVAL '15 days')
+          OR (v.road_tax_expiry >= CURRENT_DATE AND v.road_tax_expiry <= CURRENT_DATE + INTERVAL '60 days')`
     );
     return result.rows;
   },

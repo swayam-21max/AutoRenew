@@ -116,11 +116,18 @@ async function dispatchVehicleReminder({
     }
 
     // 2. Log outcome to reminder_logs table
-    const status = dispatchResult.success ? 'SENT' : 'FAILED';
-    const provider = dispatchResult.provider || channel;
+    const status = dispatchResult.success ? 'SUCCESS' : 'FAILED';
     const errorMsg = dispatchResult.error || dispatchResult.notice || null;
+    const recipient = channel === 'EMAIL' ? targetEmail : targetPhone;
 
-    await reminderModel.logReminder(vehicleId, complianceType, channel, provider, status, errorMsg);
+    await reminderModel.logReminder(
+      vehicleId,
+      complianceType,
+      daysRemaining || 0,
+      recipient || 'N/A',
+      status,
+      errorMsg
+    );
 
     results.push({ channel, ...dispatchResult });
   }

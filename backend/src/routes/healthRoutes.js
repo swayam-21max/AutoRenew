@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
  * POST /api/health/trigger-scheduler
  * Manually trigger the vehicle compliance reminder sweep across active user preference channels.
  */
-router.post('/trigger-scheduler', async (req, res, next) => {
+router.all('/trigger-scheduler', async (req, res, next) => {
   try {
     await processReminders();
     res.json({

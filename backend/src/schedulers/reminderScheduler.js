@@ -8,9 +8,9 @@ const {
   sendAdminAuditEmail,
 } = require('../services/emailService');
 
-const INSURANCE_THRESHOLDS = [30, 15, 7, 3, 1];
-const PUC_THRESHOLDS = [15, 7, 3, 1];
-const ROAD_TAX_THRESHOLDS = [60, 30, 15, 7];
+const INSURANCE_THRESHOLDS = [30, 15, 7, 3, 1, 0];
+const PUC_THRESHOLDS = [15, 7, 3, 1, 0];
+const ROAD_TAX_THRESHOLDS = [60, 30, 15, 7, 0];
 
 /**
  * Determine exact due threshold for a given days remaining value.
