@@ -89,24 +89,24 @@ export default function Dashboard() {
   if (loading) return <LoadingSpinner size="lg" text="Loading Fleet Compliance Overview..." />;
   if (error) return <div className="alert alert-error">{error}</div>;
 
-  const notifStats = data.notificationStats || { emailsSent: 0, successRate: 100 };
+  const notifStats = data?.notificationStats || { emailsSent: 0, successRate: 100 };
   const emStats = emailStats || { totalEmailsSent: notifStats.emailsSent || 0, emailsSentToday: 0 };
   
   const totalExpiringSoon = 
-    (data.stats.insuranceExpiringSoon || 0) + 
-    (data.stats.pucExpiringSoon || 0) + 
-    (data.stats.roadTaxExpiringSoon || 0);
+    (data?.stats?.insuranceExpiringSoon || 0) + 
+    (data?.stats?.pucExpiringSoon || 0) + 
+    (data?.stats?.roadTaxExpiringSoon || 0);
 
   // Combine and format upcoming expiries for tabbed list view
   const allUpcoming = [];
-  (data.upcoming?.insurance || []).forEach(v => {
-    allUpcoming.push({ ...v, itemType: 'INSURANCE', title: 'Insurance', days: v.compliance.insuranceDays, expiry: v.insurance_expiry });
+  (data?.upcoming?.insurance || []).forEach(v => {
+    allUpcoming.push({ ...v, itemType: 'INSURANCE', title: 'Insurance', days: v.compliance?.insuranceDays ?? 0, expiry: v.insurance_expiry });
   });
-  (data.upcoming?.puc || []).forEach(v => {
-    allUpcoming.push({ ...v, itemType: 'PUC', title: 'PUC Certificate', days: v.compliance.pucDays, expiry: v.puc_expiry });
+  (data?.upcoming?.puc || []).forEach(v => {
+    allUpcoming.push({ ...v, itemType: 'PUC', title: 'PUC Certificate', days: v.compliance?.pucDays ?? 0, expiry: v.puc_expiry });
   });
-  (data.upcoming?.roadTax || []).forEach(v => {
-    allUpcoming.push({ ...v, itemType: 'ROAD_TAX', title: 'Road Tax', days: v.compliance.roadTaxDays, expiry: v.road_tax_expiry });
+  (data?.upcoming?.roadTax || []).forEach(v => {
+    allUpcoming.push({ ...v, itemType: 'ROAD_TAX', title: 'Road Tax', days: v.compliance?.roadTaxDays ?? 0, expiry: v.road_tax_expiry });
   });
 
   allUpcoming.sort((a, b) => a.days - b.days);

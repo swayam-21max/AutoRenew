@@ -5,16 +5,16 @@ const notificationLogModel = {
    * Get notification statistics for dashboard widget.
    */
   async getStats(userId = null) {
-    const userClause = userId ? 'JOIN policies p ON rl.policy_id = p.id WHERE p.user_id = $1' : '';
+    const userClause = userId ? 'JOIN vehicles v ON rl.vehicle_id = v.id WHERE v.user_id = $1' : '';
     const params = userId ? [userId] : [];
 
     const result = await query(
       `SELECT
-         COUNT(*) FILTER (WHERE rl.notification_channel = 'EMAIL') AS emails_sent,
+         COUNT(*) FILTER (WHERE rl.notification_channel = 'EMAIL' OR rl.notification_channel IS NULL) AS emails_sent,
          COUNT(*) FILTER (WHERE rl.notification_channel = 'SMS') AS sms_sent,
          COUNT(*) FILTER (WHERE rl.notification_channel = 'WHATSAPP') AS whatsapp_sent,
-         COUNT(*) FILTER (WHERE rl.delivery_status = 'FAILED') AS failed_deliveries,
-         COUNT(*) FILTER (WHERE rl.delivery_status IN ('SENT', 'SIMULATED')) AS successful_deliveries,
+         COUNT(*) FILTER (WHERE rl.status = 'FAILED') AS failed_deliveries,
+         COUNT(*) FILTER (WHERE rl.status IN ('SUCCESS', 'SENT', 'SIMULATED')) AS successful_deliveries,
          MAX(rl.sent_at) AS last_notification_sent
        FROM reminder_logs rl
        ${userClause}`,
@@ -22,8 +22,8 @@ const notificationLogModel = {
     );
 
     const row = result.rows[0] || {};
-    const totalSent = parseInt(row.emails_sent || 0) + parseInt(row.sms_sent || 0) + parseInt(row.whatsapp_sent || 0);
-    const successful = parseInt(row.successful_deliveries || 0);
+    const totalSent = parseInt(row.emails_sent || 0, 10) + parseInt(row.sms_sent || 0, 10) + parseInt(row.whatsapp_sent || 0, 10);
+    const successful = parseInt(row.successful_deliveries || 0, 10);
     const successRate = totalSent > 0 ? Math.round((successful / totalSent) * 100) : 100;
 
     return {
@@ -39,3 +39,4 @@ const notificationLogModel = {
 };
 
 module.exports = notificationLogModel;
+
