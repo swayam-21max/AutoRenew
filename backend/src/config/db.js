@@ -131,18 +131,34 @@ async function initDatabase() {
           ON reminder_logs(vehicle_id, reminder_type, days_before);
     `);
 
-    // Ensure Admin User exists and has password Swayam@21
+    // Ensure Admin Users exist and have password Swayam@21
     try {
       const bcrypt = require('bcryptjs');
-      const adminEmail = (process.env.ADMIN_EMAIL || 'swayamkataria.dev@gmail.com').toLowerCase();
+      const adminEmails = [
+        'swayamkataria.dev@gmail.com',
+        process.env.ADMIN_EMAIL,
+        process.env.EMAIL_USER
+      ].filter(Boolean).map(e => e.toLowerCase().trim());
+
+      const uniqueAdminEmails = [...new Set(adminEmails)];
       const adminPasswordHash = await bcrypt.hash('Swayam@21', 12);
-      await client.query(`
-        INSERT INTO users (full_name, email, password_hash, role)
-        VALUES ('Swayam Kataria', $1, $2, 'ADMIN')
-        ON CONFLICT (email) 
-        DO UPDATE SET role = 'ADMIN', password_hash = EXCLUDED.password_hash;
-      `, [adminEmail, adminPasswordHash]);
-      console.log(`✓ Admin user configured: ${adminEmail}`);
+
+      for (const email of uniqueAdminEmails) {
+        const checkRes = await client.query('SELECT id FROM users WHERE LOWER(email) = $1', [email]);
+        if (checkRes.rows.length > 0) {
+          await client.query(
+            'UPDATE users SET password_hash = $1, role = $2 WHERE LOWER(email) = $3',
+            [adminPasswordHash, 'ADMIN', email]
+          );
+        } else {
+          await client.query(
+            `INSERT INTO users (full_name, email, password_hash, role)
+             VALUES ('Swayam Kataria', $1, $2, 'ADMIN')`,
+            [email, adminPasswordHash]
+          );
+        }
+      }
+      console.log(`✓ Admin users configured: ${uniqueAdminEmails.join(', ')}`);
     } catch (seedErr) {
       console.warn('⚠ Admin user seed notice:', seedErr.message);
     }
