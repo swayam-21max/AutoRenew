@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const vehicleController = require('../controllers/vehicleController');
-const { authenticate } = require('../middlewares/authMiddleware');
+const { authenticate, requireAdmin } = require('../middlewares/authMiddleware');
 
 // Configure multer memory storage for Excel file processing
 const upload = multer({
@@ -29,8 +29,8 @@ router.use(authenticate);
 // Sample template download
 router.get('/sample-template', vehicleController.downloadSample);
 
-// Import Excel sheet
-router.post('/import', upload.single('excelFile'), vehicleController.importExcel);
+// Import Excel sheet (Admin Only)
+router.post('/import', requireAdmin, upload.single('excelFile'), vehicleController.importExcel);
 
 // Vehicle CRUD
 router.get('/', vehicleController.getAll);

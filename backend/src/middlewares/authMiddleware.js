@@ -25,4 +25,22 @@ const authenticate = (req, res, next) => {
   }
 };
 
-module.exports = { authenticate, authenticateJWT: authenticate };
+/**
+ * Admin authorization middleware.
+ * Restricts route access strictly to the designated Admin user.
+ */
+const requireAdmin = (req, res, next) => {
+  const adminEmail = (process.env.ADMIN_EMAIL || 'swayamkataria.dev@gmail.com').toLowerCase();
+  const userEmail = (req.user?.email || '').toLowerCase();
+  const userRole = req.user?.role || 'USER';
+
+  if (userRole === 'ADMIN' || userEmail === adminEmail) {
+    return next();
+  }
+
+  return res.status(403).json({
+    error: 'Access denied. Only the Administrator (swayamkataria.dev@gmail.com) can upload Excel fleet data.',
+  });
+};
+
+module.exports = { authenticate, authenticateJWT: authenticate, requireAdmin };

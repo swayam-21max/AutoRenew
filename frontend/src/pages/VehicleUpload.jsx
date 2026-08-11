@@ -1,15 +1,38 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { vehicleAPI } from '../services/api';
 import FileUpload from '../components/FileUpload';
 
 export default function VehicleUpload() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN' || user?.email?.toLowerCase() === 'swayamkataria.dev@gmail.com';
+
   const [uploading, setUploading] = useState(false);
   const [downloadingSample, setDownloadingSample] = useState(false);
   const [error, setError] = useState('');
   const [importSummary, setImportSummary] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
+
+  if (!isAdmin) {
+    return (
+      <div className="animate-fade-in" style={{ padding: 'var(--space-4)' }}>
+        <div className="card card-elevated" style={{ textAlign: 'center', padding: 'var(--space-8)' }}>
+          <span style={{ fontSize: '48px', display: 'block', marginBottom: 'var(--space-4)' }}>🔒</span>
+          <h2 style={{ fontSize: 'var(--font-size-xl)', color: 'var(--color-primary)', fontWeight: 800, marginBottom: 'var(--space-2)' }}>
+            Administrator Access Only
+          </h2>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)', maxWidth: '500px', margin: '0 auto var(--space-6)' }}>
+            Only the platform Administrator (<code>swayamkataria.dev@gmail.com</code>) is authorized to upload Excel fleet data.
+          </p>
+          <button className="btn btn-primary" onClick={() => navigate('/vehicles')}>
+            ← Return to Fleet Vehicles
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const handleFileSelect = async (file) => {
     setUploading(true);

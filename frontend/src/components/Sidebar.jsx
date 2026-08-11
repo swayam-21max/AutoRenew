@@ -1,14 +1,17 @@
 import { NavLink, useLocation } from 'react-router-dom';
-
-const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-  { path: '/vehicles', label: 'Vehicles & Fleet', icon: '🚛' },
-  { path: '/import', label: 'Bulk Excel Import', icon: '📥' },
-  { path: '/profile', label: 'Profile & Reminders', icon: '⚙️' },
-];
+import { useAuth } from '../context/AuthContext';
 
 export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN' || user?.email?.toLowerCase() === 'swayamkataria.dev@gmail.com';
+
+  const navItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vehicles', label: 'Vehicles & Fleet', icon: '🚛' },
+    { path: '/import', label: isAdmin ? 'Bulk Excel Import' : 'Excel Import (Admin Only)', icon: '📥' },
+    { path: '/profile', label: 'Profile & Reminders', icon: '⚙️' },
+  ];
 
   return (
     <>

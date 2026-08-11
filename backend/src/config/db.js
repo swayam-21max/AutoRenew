@@ -25,8 +25,55 @@ pool.on('error', (err) => {
   console.error('Unexpected database pool error:', err.message);
 });
 
+const EMBEDDED_SCHEMA = `
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20),
+    notification_preference VARCHAR(30) DEFAULT 'EMAIL',
+    role VARCHAR(20) DEFAULT 'USER',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+CREATE TABLE IF NOT EXISTS vehicles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    owner_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone_number VARCHAR(20) NOT NULL,
+    vehicle_number VARCHAR(100) NOT NULL,
+    insurance_expiry DATE,
+    puc_expiry DATE,
+    road_tax_expiry DATE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_vehicles_user_id ON vehicles(user_id);
+CREATE INDEX IF NOT EXISTS idx_vehicles_number ON vehicles(vehicle_number);
+
+CREATE TABLE IF NOT EXISTS reminder_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    vehicle_id UUID REFERENCES vehicles(id) ON DELETE CASCADE,
+    reminder_type VARCHAR(20) NOT NULL,
+    days_before INT DEFAULT 0,
+    recipient_email VARCHAR(255),
+    status VARCHAR(20) DEFAULT 'SUCCESS',
+    error_message TEXT,
+    notification_channel VARCHAR(20) DEFAULT 'EMAIL',
+    provider VARCHAR(50),
+    sent_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+`;
+
 /**
- * Ensures database and schema exist. Creates "policypulse" database and tables automatically if missing.
+ * Ensures database and schema exist. Creates database and tables automatically if missing.
  */
 async function initDatabase() {
   try {
@@ -35,9 +82,16 @@ async function initDatabase() {
       "SELECT to_regclass('public.users') as exists"
     );
     if (!tableCheck.rows[0].exists) {
-      console.log('⚡ Initializing database schema from schema.sql...');
-      const schemaPath = path.join(__dirname, '../../schema.sql');
-      const schemaSql = fs.readFileSync(schemaPath, 'utf8');
+      console.log('⚡ Initializing database schema...');
+      let schemaSql = EMBEDDED_SCHEMA;
+      try {
+        const schemaPath = path.join(__dirname, '../../schema.sql');
+        if (fs.existsSync(schemaPath)) {
+          schemaSql = fs.readFileSync(schemaPath, 'utf8');
+        }
+      } catch {
+        // Fallback to embedded schema
+      }
       await client.query(schemaSql);
       console.log('✓ Database tables created successfully');
     } else {
@@ -113,9 +167,7 @@ async function initDatabase() {
         console.log(`✓ Created database "${targetDbName}"`);
 
         const client = await pool.connect();
-        const schemaPath = path.join(__dirname, '../../schema.sql');
-        const schemaSql = fs.readFileSync(schemaPath, 'utf8');
-        await client.query(schemaSql);
+        await client.query(EMBEDDED_SCHEMA);
         console.log('✓ Database tables created successfully');
         client.release();
         return;
@@ -127,7 +179,25 @@ async function initDatabase() {
   }
 }
 
-const query = (text, params) => pool.query(text, params);
-const getClient = () => pool.connect();
+let initPromise = null;
+function ensureInit() {
+  if (!initPromise) {
+    initPromise = initDatabase().catch((err) => {
+      console.warn('⚠ Database initialization warning:', err.message);
+      initPromise = null;
+    });
+  }
+  return initPromise;
+}
+
+const query = async (text, params) => {
+  await ensureInit();
+  return pool.query(text, params);
+};
+
+const getClient = async () => {
+  await ensureInit();
+  return pool.connect();
+};
 
 module.exports = { pool, query, getClient, initDatabase };
