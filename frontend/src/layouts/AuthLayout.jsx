@@ -32,7 +32,7 @@ export default function AuthLayout() {
             fontWeight: 800,
             marginBottom: 'var(--space-4)',
           }}>
-            P
+            A
           </div>
           <h1 style={{
             fontSize: 'var(--font-size-2xl)',
@@ -40,14 +40,14 @@ export default function AuthLayout() {
             letterSpacing: '-0.03em',
             color: 'var(--color-text)',
           }}>
-            PolicyPulse
+            AutoRenew
           </h1>
           <p style={{
             color: 'var(--color-text-muted)',
             fontSize: 'var(--font-size-sm)',
             marginTop: 'var(--space-1)',
           }}>
-            Never miss an insurance renewal
+            Vehicle Compliance & Expiry Reminder Platform
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export default function AuthLayout() {
           fontSize: 'var(--font-size-xs)',
           color: 'var(--color-text-light)',
         }}>
-          © {new Date().getFullYear()} PolicyPulse. All rights reserved.
+          © {new Date().getFullYear()} AutoRenew. All rights reserved.
         </p>
       </div>
     </div>

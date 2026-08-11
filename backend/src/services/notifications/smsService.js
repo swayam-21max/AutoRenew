@@ -10,7 +10,7 @@ function buildSmsText({ userName, policyNumber, insuranceCompany, expiryDate, da
     day: 'numeric',
   });
 
-  return `PolicyPulse Reminder\n\nPolicy Number:\n${policyNumber}\n\nInsurance Company:\n${insuranceCompany || 'N/A'}\n\nExpires On:\n${formattedDate}\n\nYour policy will expire in ${daysRemaining} day(s). Please renew before expiry.`;
+  return `AutoRenew Reminder\n\nPolicy Number:\n${policyNumber}\n\nInsurance Company:\n${insuranceCompany || 'N/A'}\n\nExpires On:\n${formattedDate}\n\nYour policy will expire in ${daysRemaining} day(s). Please renew before expiry.`;
 }
 
 /**

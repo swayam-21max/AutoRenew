@@ -47,10 +47,10 @@ export default function Navbar({ onToggleSidebar }) {
 
           <Link to="/" className="brand-emblem">
             <div className="emblem-badge">
-              P
+              A
             </div>
             <div className="brand-titles">
-              <span className="brand-name">PolicyPulse</span>
+              <span className="brand-name">AutoRenew</span>
               <span className="brand-tagline">Vehicle Compliance Platform</span>
             </div>
           </Link>

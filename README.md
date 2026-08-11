@@ -1,27 +1,26 @@
-# PolicyPulse
+# AutoRenew
 
-**AI-Powered Insurance Renewal Reminder Platform**
+**Vehicle Compliance & Expiry Reminder Platform**
 
-PolicyPulse helps users avoid missing insurance renewal deadlines by automating policy document processing, data extraction, expiry monitoring, and renewal reminders.
+AutoRenew helps users avoid missing vehicle compliance deadlines (Insurance, PUC, and Road Tax) by automating Excel fleet processing, expiry monitoring, and multi-channel renewal reminders.
 
 ---
 
 ## ✨ Features
 
-- 🤖 **AI-Powered Extraction** — Upload insurance policy PDFs, and Google Gemini AI automatically extracts key details (policy number, holder name, insurer, dates)
-- 📊 **Dashboard Analytics** — Overview with stats cards (total, active, expiring soon, expired), recent policies, and upcoming expirations
-- 📋 **Policy Management** — Full CRUD with search, filter by status, sort, and pagination
-- 🔔 **Smart Reminders** — Automated email reminders at 30, 15, 7, and 1 day before expiry
-- 🔒 **Secure Authentication** — JWT-based auth with bcrypt password hashing
+- 🤖 **AI-Powered & Excel Fleet Processing** — Upload vehicle fleet spreadsheets (.xlsx, .xls) to automatically extract and validate compliance expiries
+- 📊 **Fleet Analytics** — Overview with stats cards (total vehicles, active compliance, expiring soon, expired)
+- 🚛 **Vehicle Fleet Management** — Full CRUD with search, filter by compliance type, and pagination
+- 🔔 **Multi-Channel Reminders** — Automated Email, SMS, and WhatsApp reminders before expiries
+- 🔒 **Role-Based Security** — Strict Administrator authorization for bulk data operations, JWT-based auth with bcrypt hashing
 - 📱 **Responsive Design** — Mobile, tablet, and desktop friendly
-- 🎨 **Modern UI** — Clean, calm SaaS design inspired by Notion, Stripe, and Linear
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-PolicyPulse/
+AutoRenew/
 ├── backend/                    # Express.js API Server
 │   ├── src/
 │   │   ├── config/             # Database configuration

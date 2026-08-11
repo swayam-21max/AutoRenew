@@ -1,4 +1,4 @@
--- PolicyPulse — Vehicle Compliance Reminder System Database Schema
+-- AutoRenew — Vehicle Compliance Reminder System Database Schema
 -- Compatible with Neon PostgreSQL
 
 -- Enable UUID extension

@@ -11,7 +11,7 @@ function buildWhatsAppText({ userName, policyNumber, insuranceCompany, expiryDat
 
   const urgencyEmoji = daysRemaining <= 1 ? '🚨' : daysRemaining <= 7 ? '⚡' : '🔔';
 
-  return `${urgencyEmoji} *PolicyPulse Reminder*
+  return `${urgencyEmoji} *AutoRenew Reminder*
 
 Hello *${userName || 'Valued Client'}*,
 
@@ -24,7 +24,7 @@ Your insurance policy is approaching expiry (${daysRemaining} day${daysRemaining
 Please renew your policy before expiry to prevent lapse in coverage.
 
 Thank you,
-*PolicyPulse Team*`;
+*AutoRenew Team*`;
 }
 
 /**

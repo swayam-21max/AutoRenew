@@ -46,7 +46,7 @@ async function sendReminderEmail({ to, userName, policyNumber, insuranceCompany,
           <!-- Header -->
           <tr>
             <td style="background: linear-gradient(135deg, #0A2B5C, #051937); padding: 32px 40px; text-align: center;">
-              <h1 style="margin: 0; color: #FFFFFF; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">PolicyPulse</h1>
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">AutoRenew</h1>
               <p style="margin: 6px 0 0; color: #D0E1FD; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Vehicle Compliance Reminder Platform</p>
             </td>
           </tr>
@@ -110,7 +110,7 @@ async function sendReminderEmail({ to, userName, policyNumber, insuranceCompany,
           <tr>
             <td style="background-color: #051937; padding: 20px 40px; border-top: 3px solid #D97706; text-align: center;">
               <p style="margin: 0; color: #94A3B8; font-size: 12px;">
-                © PolicyPulse Vehicle Compliance Reminder Platform.<br>
+                © AutoRenew Vehicle Compliance Reminder Platform.<br>
                 Automated notification sent to ${to}.
               </p>
             </td>
@@ -124,7 +124,7 @@ async function sendReminderEmail({ to, userName, policyNumber, insuranceCompany,
 </html>`;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'Vehicle Compliance Team <noreply@policypulse.com>',
+    from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'Vehicle Compliance Team <noreply@autorenew.com>',
     to,
     subject: `Vehicle Compliance Renewal Reminder — ${policyNumber}`,
     html,

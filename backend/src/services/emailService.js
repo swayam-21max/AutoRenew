@@ -265,7 +265,7 @@ ${status}`;
   `;
 
   return await sendMailHelper({
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'Vehicle Compliance Team <noreply@policypulse.com>',
+    from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'Vehicle Compliance Team <noreply@autorenew.com>',
     to: targetAdmin,
     subject,
     text,
@@ -277,20 +277,20 @@ ${status}`;
  * Send test email to ADMIN_EMAIL to verify SMTP configuration.
  */
 async function sendTestEmail(targetEmail) {
-  const adminEmail = targetEmail || process.env.ADMIN_EMAIL || process.env.EMAIL_USER || 'admin@policypulse.com';
+  const adminEmail = targetEmail || process.env.ADMIN_EMAIL || process.env.EMAIL_USER || 'admin@autorenew.com';
 
-  const subject = `PolicyPulse SMTP Test Email`;
-  const text = `Hello Admin,\n\nThis is a test email from the Vehicle Compliance Reminder Platform to verify your SMTP configuration.\n\nStatus: Active & Functional`;
+  const subject = `AutoRenew SMTP Test Email`;
+  const text = `Hello Admin,\n\nThis is a test email from the AutoRenew Vehicle Compliance Platform to verify your SMTP configuration.\n\nStatus: Active & Functional`;
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 500px; padding: 20px; border: 1px solid #BBF7D0; border-radius: 6px; background-color: #F0FDF4;">
       <h3 style="color: #16A34A; margin-top: 0;">✅ SMTP Test Successful</h3>
-      <p style="font-size: 14px; color: #166534;">This is a test email from PolicyPulse Vehicle Compliance Platform to verify your SMTP configuration.</p>
+      <p style="font-size: 14px; color: #166534;">This is a test email from AutoRenew Vehicle Compliance Platform to verify your SMTP configuration.</p>
       <p style="font-size: 13px; color: #475569;">Target Email: ${adminEmail}</p>
     </div>
   `;
 
   return await sendMailHelper({
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'Vehicle Compliance Team <noreply@policypulse.com>',
+    from: process.env.EMAIL_FROM || process.env.EMAIL_USER || 'Vehicle Compliance Team <noreply@autorenew.com>',
     to: adminEmail,
     subject,
     text,

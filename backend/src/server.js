@@ -19,7 +19,7 @@ if (process.env.VERCEL !== '1') {
   }
 
   app.listen(PORT, () => {
-    console.log(`✓ PolicyPulse API running on port ${PORT}`);
+    console.log(`✓ AutoRenew API running on port ${PORT}`);
     console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 }

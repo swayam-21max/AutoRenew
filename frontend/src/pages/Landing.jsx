@@ -120,7 +120,7 @@ export default function Landing() {
               marginBottom: 'var(--space-8)',
               maxWidth: '540px',
             }}>
-              PolicyPulse helps transport operators, fleet managers, schools, and dealerships import Excel sheets, monitor vehicle compliance expiries, and send multi-channel reminders.
+              AutoRenew helps transport operators, fleet managers, schools, and dealerships import Excel sheets, monitor vehicle compliance expiries, and send multi-channel reminders.
             </p>
 
             <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap', marginBottom: 'var(--space-8)' }}>
@@ -190,7 +190,7 @@ export default function Landing() {
                 <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#F59E0B', display: 'inline-block' }}></span>
                 <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }}></span>
                 <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 700, color: 'var(--color-primary)', marginLeft: '8px' }}>
-                  PolicyPulse Fleet Dashboard
+                  AutoRenew Fleet Dashboard
                 </span>
               </div>
               <span style={{ fontSize: '11px', fontWeight: 700, color: '#16A34A', backgroundColor: '#DCFCE7', padding: '2px 8px', borderRadius: '12px' }}>
@@ -362,8 +362,8 @@ export default function Landing() {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
-              <div className="emblem-badge" style={{ width: '36px', height: '36px', fontSize: '18px' }}>P</div>
-              <span style={{ fontSize: 'var(--font-size-lg)', fontWeight: 800, color: '#FFFFFF' }}>POLICYPULSE</span>
+              <div className="emblem-badge" style={{ width: '36px', height: '36px', fontSize: '18px' }}>A</div>
+              <span style={{ fontSize: 'var(--font-size-lg)', fontWeight: 800, color: '#FFFFFF' }}>AUTORENEW</span>
             </div>
             <p style={{ fontSize: 'var(--font-size-xs)', color: '#94A3B8', lineHeight: 1.7 }}>
               Vehicle Compliance Reminder System designed to prevent lapse in Insurance, PUC, and Road Tax coverage.
@@ -400,7 +400,7 @@ export default function Landing() {
           fontSize: 'var(--font-size-xs)',
           color: '#94A3B8',
         }}>
-          © {new Date().getFullYear()} PolicyPulse Vehicle Compliance Platform. All rights reserved.
+          © {new Date().getFullYear()} AutoRenew Vehicle Compliance Platform. All rights reserved.
         </div>
       </footer>
     </div>

@@ -9,13 +9,15 @@ export function AuthProvider({ children }) {
 
   // Initialize from localStorage
   useEffect(() => {
-    const token = localStorage.getItem('policypulse_token');
-    const savedUser = localStorage.getItem('policypulse_user');
+    const token = localStorage.getItem('autorenew_token') || localStorage.getItem('policypulse_token');
+    const savedUser = localStorage.getItem('autorenew_user') || localStorage.getItem('policypulse_user');
 
     if (token && savedUser) {
       try {
         setUser(JSON.parse(savedUser));
       } catch {
+        localStorage.removeItem('autorenew_token');
+        localStorage.removeItem('autorenew_user');
         localStorage.removeItem('policypulse_token');
         localStorage.removeItem('policypulse_user');
       }
@@ -26,8 +28,8 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     const response = await authAPI.login({ email, password });
     const { token, user: userData } = response.data;
-    localStorage.setItem('policypulse_token', token);
-    localStorage.setItem('policypulse_user', JSON.stringify(userData));
+    localStorage.setItem('autorenew_token', token);
+    localStorage.setItem('autorenew_user', JSON.stringify(userData));
     setUser(userData);
     return userData;
   }, []);
@@ -35,13 +37,15 @@ export function AuthProvider({ children }) {
   const register = useCallback(async (fullName, email, password, confirmPassword) => {
     const response = await authAPI.register({ fullName, email, password, confirmPassword });
     const { token, user: userData } = response.data;
-    localStorage.setItem('policypulse_token', token);
-    localStorage.setItem('policypulse_user', JSON.stringify(userData));
+    localStorage.setItem('autorenew_token', token);
+    localStorage.setItem('autorenew_user', JSON.stringify(userData));
     setUser(userData);
     return userData;
   }, []);
 
   const logout = useCallback(() => {
+    localStorage.removeItem('autorenew_token');
+    localStorage.removeItem('autorenew_user');
     localStorage.removeItem('policypulse_token');
     localStorage.removeItem('policypulse_user');
     setUser(null);
